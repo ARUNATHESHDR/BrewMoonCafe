@@ -1,0 +1,96 @@
+const LOGO="assets/logo.png";
+const M=[
+["Breakfast","Work hard, breakfast harder!",["Classic English Breakfast~330~n~Bacon, sausage, fried eggs, mushroom, beans, grilled tomato, toast, tea or coffee","American Breakfast~350~n~2 pancakes, bacon or chicken ham, sausages, eggs, beans, mushroom, tea or coffee","Herbivore's English Breakfast~320~v~Mushroom, eggs or cottage cheese, beans, tomato, mash, salad, toast, tea or coffee","Keto Breakfast~330~n~Mushrooms, paneer, sausages, scrambled eggs, bacon or ham, sauteed veggies","Classic Chicken Breakfast~330~n~Sausages, ham, fried eggs, mushrooms, beans, tomato, toast","Classic Waffle~150~v~Whipped cream and maple syrup","Chocolate Waffle~150~v~Vanilla ice cream and chocolate syrup","Pancakes~150~v~Banana and maple syrup","French Toast~170~v~With scrambled eggs and regular tea or coffee","Cheese French Toast~180~v~With scrambled eggs and regular tea or coffee","Honey Toast~170~v~With scrambled eggs and regular tea or coffee","Nutella French Toast~180~v~With scrambled eggs and regular tea or coffee"]],
+["Eggs","Egg-scuses!",["Scrambled~130~~With buttered toast (2)","Sunny Side Up~120~~With buttered toast (2)","Boiled~120~~With buttered toast (2)","Shakshuka~240~~2 eggs poached in spiced tomato sauce, buttered toast","Bacon & Eggs~220~n~2 fried eggs, 3 slices bacon, cherry tomatoes, spices","Turkish Eggs~240~~Poached eggs on garlicky yogurt, spicy butter sauce, red pepper flakes","Fried Eggs with Spinach & Mushrooms~210~~On a bed of sauteed spinach and mushrooms","Eggs Benedict~260~n~Bun halves with avocado, bacon, poached eggs, hollandaise, potato wedges"]],
+["Omelettes","For frying out loud! Served with buttered toast (2).",["Egg White Omelette~250~~Egg whites only","Mexican Omelette~220~~Onion, tomato, capsicum, coriander, green chilli","Cheese Omelette~220~~Cheese","Masala Omelette~220~~Indian spices","Chicken Omelette~250~n~Chicken","Stuffed Omelette~250~n~Mushrooms and sausages","Spanish Omelette~220~~Onion and potato slices","Classic Denver Omelette~250~n~Capsicum, chicken ham, cheese","Chicken Pepperoni Omelette~250~n~Onion, pepperoni, cheese","Mediterranean Omelette~250~~Cherry tomatoes, spinach, parsley, black olives, feta"]],
+["Appetizers","Count the memories, not the calories.",["French Fries~120~v","Peri Peri Fries~140~v","Cheesy Fries~200~v","Peri Peri Cheesy Fries~210~v","Veg Nuggets~140~v","Cheesy Garlic Bread~220~v","Cheese Corn Balls~220~v","Butter Garlic Mushrooms~260~v","Chilli Garlic Mushrooms~260~v","Chilli Garlic Paneer~260~v","Tomato Basil Bruschetta~200~v","Mushroom Bruschetta~250~v","Chicken Wings (Sweet & Spicy)~250~n","Cajun Style Wings~250~n","Peri Peri Wings~250~n","Butter Garlic Prawns~330~n","Chilli Garlic Prawns~330~n","Fish & Chips~350~n","Fish Fingers~320~n","Chicken Fingers~200~n","Dynamite Chicken~230~n","Dynamite Prawns~330~n","Chicken Popcorn~170~n","Chicken Bruschetta~230~n","Chicken Skewers~250~n","Prawns Skewers~330~n","Bacon Wrapped Shrimp~390~n"]],
+["Sandwiches","Great in bread!",["Peanut Butter & Jam~120~v","Grilled Cheese~170~v","Veg Grill (Paneer)~190~v","Veg Grill (Mushroom)~190~v","Spinach Corn~180~v","Bombay Grilled~190~v","Egg Mayo~160~n","Egg Mayo & Chicken Ham Club~230~n","Classic Chicken~180~n","Chicken Ham~200~n","Chicken Club~230~n","Egg Mayo & Bacon Club~250~n"]],
+["Burgers","Eyes on the fries!",["Veg Burger~200~v","Paneer Burger~220~v","Chicken Hot Dog~200~n","Chicken Burger~250~n","Fried Chicken Burger~260~n","Barbequed Chicken Burger~250~n","Peri Peri Chicken Burger~250~n","Lamb Burger~290~n","Pork Burger~290~n","The Almighty Burger~360~n~1 chicken patty, 1 fried chicken patty, 2 sausages, 2 bacon or chicken ham, egg, cheese, veggies","Double Cheese Burger~260 / 330 / 380~~Veg / Chicken / Lamb, 2 patties, 2 cheese slices, pickle"]],
+["Pizzas","Another one bites the crust!",["Mexican Pizza~260~v~Corn, capsicum, jalapeno, tomato, onion, black olives","Margherita Pizza~220~v~Cheese, cherry tomatoes, basil","Garden Fresh Pizza~280~v~Capsicum, onion, tomato, broccoli, black olives","Cottage Cheese Pizza~280~v~Paneer, onion, capsicum","Pesto Pizza~260~v~Capsicum, onion, tomato, broccoli, pesto","Corn Cheese Pizza~250~v~Corn and cheese","Classic Chicken Pizza~280~n~Chicken, onion, capsicum","Peri Peri Chicken Pizza~280~n~Chicken, onion, capsicum, peri peri spice","Chicken Bolognese Pizza~300~n~Chicken mince, capsicum","Lamb Bolognese Pizza~330~n~Lamb mince, capsicum","BBQ Chicken Pizza~280~n~Chicken, jalapeno, BBQ sauce","Meat Lover's Pizza~320~n~Chicken mince, chicken sausages","Chicken Pepperoni Pizza~290~n","Pesto Chicken Pizza~290~n~Chicken, onion, capsicum in pesto sauce"]],
+["Pastas","Legalize marinara! Veg / Chicken / Seafood.",["Spaghetti in Marinara Sauce~230 / 260 / 300","Penne in Alfredo Sauce~250 / 280 / 320","Penne in Pesto Sauce~230 / 260 / 300","Spaghetti in Pink Sauce~230 / 260 / 300","Spaghetti in Lemon Butter Sauce~230 / 260 / 300","Aglio e Olio~230 / 260 / 330~~Spaghetti tossed in olive oil and spices","Carbonara~280~n~Spaghetti with bacon","Spaghetti & Meatballs~280 / 320~n~Chicken / Lamb","Mac n Cheese~200~v"]],
+["Main course","Meat, herbs, spice and everything nice! Served with mash or rice.",["Peri Peri Cottage Cheese Steak~310~v~Creamy buttery peri peri sauce, sauteed vegetables","Cauliflower Steak in Mustard Sauce~280~v~Grilled with spices, creamy mustard sauce","Chicken Florentine~330~n~Chicken breast filled with cashew, spinach, paneer, brown sauce","Chicken Steak~330~n~Cheese-filled breast, red wine brown sauce","Pork Rib Steak~370~n~Seasoned ribs in brown pepper sauce","Fish in Lemon Butter Sauce~370~n~Basa fillet, creamy lemon butter","Pesto Fish Steak~370~n~Basa fillet marinated in pesto, creamy pesto sauce","Lamb Steak~400~n~Seasoned lamb, mushroom pepper sauce","Chicken Stroganoff~350~n~Creamy mushroom sauce with white wine, herbed rice","Mushroom Broccoli Stroganoff~330~v~Creamy mushroom sauce, herbed rice","Creamy Prawns in Red Wine~350~n~With mash and salad","Lasagna~300 / 330 / 380~~Veg / Chicken / Lamb"]],
+["Salads & Wraps","Leaf me and my salad alone! Wrap your tastebuds!",["Caesar Salad~190 / 220 / 260~~Veg / Chicken / Seafood","Russian Salad~190 / 220 / 260~~Veg / Chicken / Seafood","Greek Salad~190 / 220 / 260~~Veg / Chicken sausage / Seafood","Sauteed Veggies~220 / 250 / 280~~Veg / Chicken sausage / Seafood","Veg Wrap~200~v","Paneer Wrap~240~v","Egg Wrap~220","Chicken Wrap~250~n"]],
+["Soups","Soup-herb!",["Cream of Tomato~170~v","Cream of Broccoli~170~v","Cream of Mushroom~170~v","Creamy Chicken~170~n","Clear Veg~150~v","Clear Chicken~160~n"]],
+["Desserts","Always save some room!",["Plain Brownie~100~v","Brownie Sundae~140~v","Strawberry Sundae~120~v","Chocolate Sundae~120~v","Affogato~150~v~Hot espresso poured over 2 scoops of ice cream","Banana Split~180~v~Banana with 3 scoops of ice cream and sauce"]],
+["Hot drinks","Fancy a cup?",["Tea~80~v","Ginger Tea~80~v","Coffee (Regular)~80~v","Coffee (Filter)~80~v","Cappuccino~130~v","Milk~50~v","Espresso~80~v~100% Arabica","Americano~120~v~Espresso and hot water","Black Tea / Black Coffee / Lemon Tea / Green Tea~80~v","Hot Chocolate~150~v"]],
+["Cold drinks","Shaken, iced and mocktailed.",["Iced Tea (Lemon / Peach)~100~v","Cold Coffee~140~v","Greek Frappe~140~v~Whisked coffee with ice and milk","Chocolate / Vanilla / Banana Milk Shake~150~v","Iced Americano~100~v","Lemon Juice~70~v","Lemon Soda~90~v","Coffee Lemonade~140~v~Fresh lemon juice, ice and espresso","Spanish Latte~150~v~Coffee shaken with condensed milk and honey","Salted Caramel Latte / Iced Mocha Latte~180~v","Virgin Mojito~100~v","Black Mojito~120~v","Blue Sky~120~v~Mocktail","Cinderella~120~v~Mocktail","Purple Rain~120~v~Mocktail","Blue Hawaiian Punch~150~v~Mocktail","Strawberry / Mango Punch~150~v~Mocktail","Litchi Lemonade~150~v~Mocktail","Strawberry Colada~150~v~Mocktail"]]
+];
+const $=s=>document.querySelector(s);let cat="All",ft="",qq="";
+document.querySelectorAll("[data-logo]").forEach(i=>i.src=LOGO);
+// awning + lights + vines
+$("#awn").innerHTML="<i></i>".repeat(Math.ceil(innerWidth/44)+40);
+(()=>{const n=4,k=9,W=1000;let d="",h="";for(let s=0;s<n;s++){const x0=s*W/n,x1=(s+1)*W/n;d+=(s?"":`M${x0} 8`)+` Q${(x0+x1)/2} 88 ${x1} 8`;
+for(let i=1;i<k;i++){const t=i/k,x=x0+(x1-x0)*t,y=8+160*t*(1-t);h+=`<b style="left:${x/W*100}%;top:${y}px;animation-delay:${(Math.random()*3).toFixed(2)}s"></b>`}}
+$("#wire").setAttribute("d",d);$("#lights").insertAdjacentHTML("beforeend",h)})();
+function vine(el,n){let h="";for(let i=0;i<n;i++)h+=`<u style="top:${14+i*26}px;left:${i%2?20:-6}px;transform:rotate(${i%2?-25:205}deg);background:hsl(${145+Math.random()*20},45%,${28+Math.random()*14}%)"></u>`;el.style.height=(n*26+20)+"px";el.innerHTML=h}
+vine($("#v1"),9);vine($("#v2"),13);
+// marquee
+const w=["Filter coffee","Shakshuka","Peri peri fries","Brownie sundae","Spanish latte","Pesto pizza","Eggs Benedict","Black mojito"];
+$("#mq").innerHTML=[...w,...w].map(x=>`<span>${x}</span><span>✦</span>`).join("");
+// menu
+function chips(){$("#chips").innerHTML=["All",...M.map(m=>m[0])].map(c=>`<button class="${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("")}
+function render(){
+ let h="";
+ M.forEach(([t,tag,items])=>{
+  if(cat!=="All"&&cat!==t)return;
+  const r=items.map(s=>s.split("~")).filter(([n,p,v,d])=>(!ft||v===ft)&&(!qq||(n+" "+(d||"")).toLowerCase().includes(qq)));
+  if(!r.length)return;
+  h+=`<div class="cat"><h3>${t}</h3><p>${tag}</p><div class="items">`+r.map(([n,p,v,d])=>{
+   const prices=p.split("/").map(x=>Number(x.trim()));
+   let variantOptions="";
+   if(prices.length>1){
+    let labels=["Veg","Chicken","Seafood"];
+    if(d&&d.includes("/"))labels=d.split("/").map((x,i)=>i===0?x.trim():x.split(",")[0].trim());
+    if(labels.length!==prices.length)labels=prices.map((_,i)=>`Option ${i+1}`);
+    variantOptions=`<select class="variant" aria-label="Choose option for ${n}">${prices.map((price,i)=>`<option value="${price}" data-label="${labels[i]||`Option ${i+1}`}">${labels[i]||`Option ${i+1}`} - Rs ${price}</option>`).join("")}</select>`;
+   }
+   return `<div class="it"><div><div class="nm">${v?`<span class="d ${v}"></span>`:""}${n}</div>${d?`<div class="ds">${d}</div>`:""}</div><div class="add-row"><span class="pr">${p}</span>${variantOptions}<button class="add-btn" type="button" data-name="${n}" data-price="${prices[0]}">Add</button></div></div>`;
+  }).join("")+`</div></div>`;
+ });
+ $("#out").innerHTML=h||`<p class="none">No dishes match. Clear the search or choose All.</p>`;
+}
+$("#chips").onclick=e=>{const c=e.target.dataset.c;if(!c)return;cat=c;chips();render()};
+$("#f").onclick=e=>{if(e.target.dataset.f===undefined)return;ft=e.target.dataset.f;document.querySelectorAll("#f button").forEach(b=>b.classList.toggle("on",b===e.target));render()};
+$("#q").oninput=e=>{qq=e.target.value.trim().toLowerCase();render()};
+
+const cart=new Map();
+function cartKey(name,label){return label?name+"|"+label:name}
+function updateCart(){
+ let count=0,total=0;
+ let html="";
+ cart.forEach((line,key)=>{
+  count+=line.qty;
+  total+=line.price*line.qty;
+  html+=`<div class="cart-line"><div><strong>${line.name}</strong>${line.label?`<small>${line.label}</small>`:""}</div><div class="qty"><button type="button" data-cart-key="${key}" data-change="-1" aria-label="Decrease quantity">−</button><span>${line.qty}</span><button type="button" data-cart-key="${key}" data-change="1" aria-label="Increase quantity">+</button></div></div>`;
+ });
+ $("#cartLines").innerHTML=html||`<p class="lead">Your cart is empty.</p>`;
+ $("#cartCount").textContent=count;
+ $("#cartTotal").textContent=total;
+}
+$("#out").addEventListener("click",e=>{
+ const add=e.target.closest(".add-btn");
+ if(!add)return;
+ const row=add.closest(".it");
+ const select=row.querySelector(".variant");
+ let price=Number(add.dataset.price),label="";
+ if(select){const selected=select.selectedOptions[0];price=Number(selected.value);label=selected.dataset.label||""}
+ const key=cartKey(add.dataset.name,label);
+ const existing=cart.get(key);
+ cart.set(key,{name:add.dataset.name,label,price,qty:existing?existing.qty+1:1});
+ updateCart();
+ $("#cartDrawer").classList.add("open");
+});
+$("#cartLines").onclick=e=>{
+ const button=e.target.closest("[data-cart-key]");
+ if(!button)return;
+ const key=button.dataset.cartKey;
+ const line=cart.get(key);
+ if(!line)return;
+ line.qty+=Number(button.dataset.change);
+ if(line.qty<=0)cart.delete(key);else cart.set(key,line);
+ updateCart();
+};
+$("#cartOpen").onclick=()=>$("#cartDrawer").classList.toggle("open");
+$("#cartClose").onclick=()=>$("#cartDrawer").classList.remove("open");
+updateCart();
+chips();render();

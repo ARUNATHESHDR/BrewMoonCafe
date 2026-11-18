@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Brew Moon Cafe · Coffee & Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Instrument+Sans:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"></head><body>
+<div class="awn" id="awn" aria-hidden="true"></div>
+<nav><a class="br" href="#top"><img data-logo alt="Brew Moon Cafe logo">Brew Moon</a><div><a href="#story">Story</a><a href="#picks">Favourites</a><a href="#visit">Visit</a><a class="pill" href="#menu">View menu</a><button class="cart-pill" id="cartOpen" type="button">Cart (<span id="cartCount">0</span>)</button></div></nav>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Your order">
+ <div class="cart-head"><h3>Your order</h3><button class="cart-close" id="cartClose" type="button" aria-label="Close cart">×</button></div>
+ <div class="cart-lines" id="cartLines"><p class="lead">Your cart is empty.</p></div>
+ <div class="cart-total"><span>Total</span><strong>Rs <span id="cartTotal">0</span></strong></div>
+</aside>
+
+<header class="hero" id="top">
+ <div class="lights" id="lights" aria-hidden="true"><svg viewBox="0 0 1000 60" preserveAspectRatio="none"><path id="wire"/></svg></div>
+ <div class="vine left" id="v1"></div><div class="vine right" id="v2"></div>
+ <div class="txt">
+  <small>Coffee &amp; Kitchen · NRI Layout</small>
+  <h1><span>The Brew</span><span>Moon Cafe</span></h1>
+  <p>Filter coffee, all-day breakfast and a full kitchen, served under string lights. Open 9 AM to 10 PM, every day.</p>
+  <div class="btns"><a class="btn primary" href="#menu">Explore the menu</a><a class="btn" href="#visit">Find us</a></div>
+ </div>
+ <div class="stage"><img data-logo alt="Brew Moon Coffee and Kitchen logo"><div class="hint">Coffee &amp; Kitchen</div></div>
+</header>
+
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+
+<section id="story"><div class="wrap">
+ <h2>A neighbourhood cafe with a full kitchen.</h2>
+ <p class="lead">Come for the coffee, stay for the pizza. There is a plate for every hour you spend here.</p>
+ <div class="day">
+  <div><small>sunrise to noon</small><h3>All-day breakfast</h3><p>English breakfast, shakshuka, waffles, omelettes and Nutella French toast.</p></div>
+  <div><small>noon to dusk</small><h3>Slow afternoons</h3><p>Burgers, wraps, pastas and a cold mojito while the work can wait.</p></div>
+  <div><small>dusk to close</small><h3>Lantern-lit plates</h3><p>Steaks, pizzas, wings and a brownie sundae to finish.</p></div>
+ </div>
+</div></section>
+
+<section id="picks"><div class="wrap">
+ <h2>Crowd favourites</h2>
+ <div class="sig">
+  <div><h3>Shakshuka</h3><p>Two eggs poached in spiced tomato sauce with buttered toast.</p><b>Rs 240</b></div>
+  <div><h3>The Almighty Burger</h3><p>Chicken patties, sausages, bacon, egg and cheese.</p><b>Rs 360</b></div>
+  <div><h3>Penne Alfredo</h3><p>Creamy sauce with veg, chicken or seafood.</p><b>Rs 250 / 280 / 320</b></div>
+  <div><h3>Spanish Latte</h3><p>Coffee shaken with condensed milk and honey.</p><b>Rs 150</b></div>
+  <div><h3>Banana Split</h3><p>Banana with three scoops of ice cream and sauce.</p><b>Rs 180</b></div>
+ </div>
+</div></section>
+
+<section id="menu"><div class="wrap">
+ <h2>Today's menu</h2>
+ <p class="lead">Prices in rupees. Where you see several prices, they follow the order listed (for example Veg / Chicken / Seafood).</p>
+ <div class="bar">
+  <div class="chips" id="chips"></div>
+  <div class="row2"><input id="q" type="search" placeholder="Search dishes, e.g. pesto" aria-label="Search menu">
+   <div class="filters" id="f"><button data-f="" class="on">All</button><button data-f="v">Veg</button><button data-f="n">Non-veg</button></div></div>
+ </div>
+ <div id="out"></div>
+</div></section>
+
+<footer id="visit"><img data-logo alt=""><h2>Come say hi.</h2><p>Walk in, grab a table under the lights.</p>
+ <div class="info"><div><b>Find us</b>397, Shop 1, Ground Floor, SK Towers, 8th Cross, NRI Layout, Rammurthy Nagar, Bangalore</div><div><b>Open daily</b>9:00 AM to 10:00 PM</div></div>
+ <a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=The+Brew+Moon+Cafe+NRI+Layout+Bangalore">Get directions</a><p class="copyright">© The Brew Moon Cafe</p></footer>
+
+<script src="script.js"></script></body></html>
