@@ -63,7 +63,7 @@ function updateCart(){
   total+=line.price*line.qty;
   html+=`<div class="cart-line"><div><strong>${line.name}</strong>${line.label?`<small>${line.label}</small>`:""}</div><div class="qty"><button type="button" data-cart-key="${key}" data-change="-1" aria-label="Decrease quantity">−</button><span>${line.qty}</span><button type="button" data-cart-key="${key}" data-change="1" aria-label="Increase quantity">+</button></div></div>`;
  });
- $("#cartLines").innerHTML=html||`<p class="lead">Your cart is empty.</p>`;
+ $("#cartLines").innerHTML=html||`<p class="lead">Your cart is empty. Add a few favourites to start your shortlist.</p>`;
  $("#cartCount").textContent=count;
  $("#cartTotal").textContent=total;
 }
@@ -94,3 +94,166 @@ $("#cartOpen").onclick=()=>$("#cartDrawer").classList.toggle("open");
 $("#cartClose").onclick=()=>$("#cartDrawer").classList.remove("open");
 updateCart();
 chips();render();
+
+// Guest reviews and the table-aware QR landing experience
+const reviewConfig=window.BREWMOON_CONFIG||{};
+const reviewUrl=typeof reviewConfig.supabaseUrl==="string"?reviewConfig.supabaseUrl.replace(/\/+$/,""):"";
+const reviewKey=typeof reviewConfig.supabaseAnonKey==="string"?reviewConfig.supabaseAnonKey:"";
+const reviewList=$("#reviewList");
+const reviewStatus=$("#reviewStatus");
+const reviewSubmit=$("#reviewSubmit");
+let selectedRating=0;
+
+const tableNumber=new URLSearchParams(location.search).get("table");
+if(tableNumber&&/^[a-zA-Z0-9 -]{1,12}$/.test(tableNumber)){
+ const welcome=$("#tableWelcome");
+ welcome.textContent=`Welcome, table ${tableNumber.trim()} — make yourself at home.`;
+ welcome.hidden=false;
+}
+
+$("#moodOptions").addEventListener("click",event=>{
+ const button=event.target.closest("[data-category]");
+ if(!button)return;
+ cat=button.dataset.category;
+ chips();
+ render();
+ $("#moodMessage").textContent=`A little ${button.textContent.toLowerCase()} inspiration—here's our ${cat.toLowerCase()} menu.`;
+ $("#menu").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+$("#starPicker").addEventListener("click",event=>{
+ const button=event.target.closest("[data-rating]");
+ if(!button)return;
+ selectedRating=Number(button.dataset.rating);
+ $("#reviewRating").value=String(selectedRating);
+ $("#starPicker").querySelectorAll("button").forEach(star=>{
+  const active=Number(star.dataset.rating)<=selectedRating;
+  star.classList.toggle("selected",active);
+  star.setAttribute("aria-pressed",String(Number(star.dataset.rating)===selectedRating));
+ });
+});
+
+function showGuestReviews(reviews){
+ reviewList.replaceChildren();
+ $("#reviewCount").textContent=`${reviews.length} of 5`;
+ if(!reviews.length){
+  const empty=document.createElement("p");
+  empty.className="review-empty";
+  empty.textContent="No guest reviews just yet. Be the first to share what you enjoyed.";
+  reviewList.appendChild(empty);
+  return;
+ }
+ reviews.forEach(review=>{
+  const card=document.createElement("article");
+  card.className="review-card";
+  const head=document.createElement("div");
+  head.className="review-card-head";
+  const name=document.createElement("span");
+  name.className="review-card-name";
+  name.textContent=review.customer_name;
+  const date=document.createElement("time");
+  date.className="review-card-date";
+  const parsedDate=new Date(review.created_at);
+  if(!Number.isNaN(parsedDate.getTime())){
+   date.dateTime=parsedDate.toISOString();
+   date.textContent=new Intl.DateTimeFormat("en-IN",{day:"numeric",month:"short",year:"numeric"}).format(parsedDate);
+  }
+  head.append(name,date);
+  const stars=document.createElement("div");
+  stars.className="review-card-stars";
+  stars.setAttribute("aria-label",`${review.rating} out of 5 stars`);
+  stars.textContent="★".repeat(review.rating)+"☆".repeat(5-review.rating);
+  const dish=document.createElement("h4");
+  dish.className="review-card-dish";
+  dish.textContent=review.dish_name;
+  card.append(head,stars,dish);
+  if(review.comment){
+   const comment=document.createElement("p");
+   comment.className="review-card-comment";
+   comment.textContent=review.comment;
+   card.appendChild(comment);
+  }
+  reviewList.appendChild(card);
+ });
+}
+
+async function loadGuestReviews(){
+ if(!reviewUrl||!reviewKey){
+  reviewList.replaceChildren();
+  const message=document.createElement("p");
+  message.className="review-empty";
+  message.textContent="Guest reviews will appear here once the cafe review service is connected.";
+  reviewList.appendChild(message);
+  $("#reviewCount").textContent="Top 5";
+  return;
+ }
+ try{
+  const response=await fetch(`${reviewUrl}/rest/v1/customer_reviews?select=id,created_at,customer_name,dish_name,rating,comment&status=eq.approved&order=created_at.desc&limit=5`,{
+   headers:{apikey:reviewKey,Authorization:`Bearer ${reviewKey}`}
+  });
+  if(!response.ok)throw new Error(`Review service returned ${response.status}.`);
+  const reviews=await response.json();
+  if(!Array.isArray(reviews))throw new Error("Review service returned an unexpected response.");
+  showGuestReviews(reviews);
+ }catch(error){
+  console.error("Unable to load guest reviews.",error);
+  reviewList.replaceChildren();
+  const message=document.createElement("p");
+  message.className="review-empty";
+  message.textContent="Guest reviews couldn't be loaded right now. Please try again later.";
+  reviewList.appendChild(message);
+ }
+}
+
+$("#reviewForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ reviewStatus.classList.remove("error");
+ if(!selectedRating){
+  reviewStatus.textContent="Please choose a star rating before submitting.";
+  reviewStatus.classList.add("error");
+  return;
+ }
+ if(!reviewUrl||!reviewKey){
+  reviewStatus.textContent="The review service isn't connected yet. Please try again later.";
+  reviewStatus.classList.add("error");
+  return;
+ }
+ reviewSubmit.disabled=true;
+ reviewSubmit.textContent="Sending…";
+ reviewStatus.textContent="";
+ try{
+  const response=await fetch(`${reviewUrl}/rest/v1/customer_reviews`,{
+   method:"POST",
+   headers:{
+    apikey:reviewKey,
+    Authorization:`Bearer ${reviewKey}`,
+    "Content-Type":"application/json",
+    Prefer:"return=minimal"
+   },
+   body:JSON.stringify({
+    customer_name:$("#reviewName").value.trim()||"Cafe guest",
+    dish_name:$("#reviewDish").value.trim(),
+    rating:selectedRating,
+    comment:$("#reviewComment").value.trim(),
+    status:"pending"
+   })
+  });
+  if(!response.ok)throw new Error(`Review service returned ${response.status}.`);
+  $("#reviewForm").reset();
+  selectedRating=0;
+  $("#starPicker").querySelectorAll("button").forEach(star=>{
+   star.classList.remove("selected");
+   star.setAttribute("aria-pressed","false");
+  });
+  reviewStatus.textContent="Thank you! Your review has been sent for a quick check before it appears here.";
+ }catch(error){
+  console.error("Unable to submit guest review.",error);
+  reviewStatus.textContent="Your review couldn't be sent. Please check your connection and try again.";
+  reviewStatus.classList.add("error");
+ }finally{
+  reviewSubmit.disabled=false;
+  reviewSubmit.textContent="Share your review";
+ }
+});
+
+loadGuestReviews();
