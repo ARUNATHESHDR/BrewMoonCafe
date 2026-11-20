@@ -19,16 +19,169 @@ const $=s=>document.querySelector(s);let cat="All",ft="",qq="";
 document.querySelectorAll("[data-logo]").forEach(i=>i.src=LOGO);
 // awning + lights + vines
 $("#awn").innerHTML="<i></i>".repeat(Math.ceil(innerWidth/44)+40);
-(()=>{const n=4,k=9,W=1000;let d="",h="";for(let s=0;s<n;s++){const x0=s*W/n,x1=(s+1)*W/n;d+=(s?"":`M${x0} 8`)+` Q${(x0+x1)/2} 88 ${x1} 8`;
-for(let i=1;i<k;i++){const t=i/k,x=x0+(x1-x0)*t,y=8+160*t*(1-t);h+=`<b style="left:${x/W*100}%;top:${y}px;animation-delay:${(Math.random()*3).toFixed(2)}s"></b>`}}
+(()=>{const n=4,k=4,W=1000;let d="",h="";for(let s=0;s<n;s++){const x0=s*W/n,x1=(s+1)*W/n;d+=(s?"":`M${x0} 8`)+` Q${(x0+x1)/2} 48 ${x1} 8`;
+for(let i=1;i<k;i++){const t=i/k,x=x0+(x1-x0)*t,y=8+80*t*(1-t);h+=`<b style="left:${x/W*100}%;top:${y}px;animation-delay:${(Math.random()*3).toFixed(2)}s"></b>`}}
 $("#wire").setAttribute("d",d);$("#lights").insertAdjacentHTML("beforeend",h)})();
 function vine(el,n){let h="";for(let i=0;i<n;i++)h+=`<u style="top:${14+i*26}px;left:${i%2?20:-6}px;transform:rotate(${i%2?-25:205}deg);background:hsl(${145+Math.random()*20},45%,${28+Math.random()*14}%)"></u>`;el.style.height=(n*26+20)+"px";el.innerHTML=h}
 vine($("#v1"),9);vine($("#v2"),13);
 // marquee
 const w=["Filter coffee","Shakshuka","Peri peri fries","Brownie sundae","Spanish latte","Pesto pizza","Eggs Benedict","Black mojito"];
-$("#mq").innerHTML=[...w,...w].map(x=>`<span>${x}</span><span>✦</span>`).join("");
+$("#mq").innerHTML=w.map(x=>`<span>${x}</span>`).join("");
 // menu
 function chips(){$("#chips").innerHTML=["All",...M.map(m=>m[0])].map(c=>`<button class="${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("")}
+function itemDescription(name,description,category){
+ const specific={
+  "French Fries":"Golden potato fries with a crisp outside and a soft centre. A familiar savoury snack that is easy to share.",
+  "Peri Peri Fries":"Crisp fries tossed with peri peri seasoning for a warm, spicy kick. A punchy twist on a café favourite.",
+  "Cheesy Fries":"Hot, crisp fries finished with a generous layer of cheese. A comforting, savoury snack for sharing.",
+  "Peri Peri Cheesy Fries":"Crisp fries topped with cheese and peri peri seasoning. Expect a satisfying mix of creamy, savoury and spicy flavours.",
+  "Veg Nuggets":"Golden, crunchy vegetable bites with a tender centre. A simple, savoury starter that is easy to enjoy and share.",
+  "Cheesy Garlic Bread":"Toasted bread layered with garlic and melted cheese. Crisp at the edges and soft in the middle, it makes a warm starter.",
+  "Cheese Corn Balls":"Crisp golden bites with a cheesy corn filling. A warm, savoury snack that is made for sharing.",
+  "Butter Garlic Mushrooms":"Mushrooms sautéed with butter and garlic until tender and full of savoury flavour. A warm, hearty starter.",
+  "Chilli Garlic Mushrooms":"Mushrooms tossed with chilli and garlic for a savoury, gently spicy bite. A flavourful starter to enjoy warm.",
+  "Chilli Garlic Paneer":"Paneer tossed with chilli and garlic for a bold, savoury flavour. A warm vegetarian starter with a little heat.",
+  "Tomato Basil Bruschetta":"Toasted bread topped with tomato and basil for a fresh, savoury bite. A light starter with classic café flavours.",
+  "Mushroom Bruschetta":"Toasted bread topped with savoury mushrooms. Warm, satisfying and easy to share as a starter.",
+  "Chicken Wings (Sweet & Spicy)":"Chicken wings coated in a sweet-and-spicy flavour. Served as a savoury, hands-on starter for the table.",
+  "Cajun Style Wings":"Chicken wings seasoned in a Cajun-inspired style for a savoury, gently spiced bite. A hearty starter to share.",
+  "Peri Peri Wings":"Chicken wings with peri peri seasoning and a lively, spicy flavour. A bold, satisfying starter for the table.",
+  "Butter Garlic Prawns":"Prawns cooked with butter and garlic for a rich, savoury flavour. Enjoy them warm as a seafood starter.",
+  "Chilli Garlic Prawns":"Prawns tossed with chilli and garlic for a savoury kick. A flavourful seafood starter served warm.",
+  "Fish & Chips":"A classic pairing of fish and crisp chips, served hot for a hearty savoury bite. A filling café favourite.",
+  "Fish Fingers":"Crisp, golden fish fingers with a tender centre. A simple seafood starter that is easy to enjoy.",
+  "Chicken Fingers":"Tender chicken pieces in a crisp coating, served as a familiar savoury snack. Great for sharing or enjoying on your own.",
+  "Dynamite Chicken":"Crisp chicken pieces with a bold, spicy-style finish. A lively starter for guests who enjoy strong flavours.",
+  "Dynamite Prawns":"Prawns prepared with a bold, spicy-style finish. A punchy seafood starter served warm.",
+  "Chicken Popcorn":"Bite-sized chicken pieces with a crisp coating. A fun, savoury snack that is easy to share around the table.",
+  "Chicken Bruschetta":"Toasted bread topped with chicken for a warm, savoury starter. A satisfying café-style bite to share.",
+  "Chicken Skewers":"Chicken pieces cooked on skewers and served as a warm, savoury starter. A simple choice for sharing at the table.",
+  "Prawns Skewers":"Prawns cooked on skewers for a warm, savoury seafood starter. A satisfying option to enjoy fresh from the kitchen.",
+  "Bacon Wrapped Shrimp":"Shrimp wrapped in bacon for a savoury combination of seafood and smoky flavour. A rich, special-occasion style starter.",
+  "Peanut Butter & Jam":"A familiar pairing of peanut butter and jam in a simple café sandwich. Sweet, nutty and satisfying for a quick bite.",
+  "Grilled Cheese":"A warm grilled sandwich with melted cheese between toasted bread. Crisp outside and comforting inside.",
+  "Veg Grill (Paneer)":"A grilled vegetarian sandwich with paneer for a hearty filling. Toasted until warm and easy to enjoy as a light meal.",
+  "Veg Grill (Mushroom)":"A grilled vegetarian sandwich filled with mushrooms. Served warm with a savoury filling and toasted bread.",
+  "Spinach Corn":"A café sandwich pairing spinach and corn in a mellow, savoury filling. Grilled warm for a comforting bite.",
+  "Bombay Grilled":"A toasted café sandwich inspired by the familiar Bombay-style grilled favourite. Warm, savoury and satisfying for a quick meal.",
+  "Egg Mayo":"A simple sandwich filled with egg and creamy mayonnaise. A familiar, satisfying choice for a light café meal.",
+  "Egg Mayo & Chicken Ham Club":"A layered club sandwich with egg mayonnaise and chicken ham. A hearty combination for a filling lunch.",
+  "Classic Chicken":"A café-style chicken sandwich prepared fresh and served between bread. A straightforward, savoury choice for a quick meal.",
+  "Chicken Ham":"A simple sandwich filled with chicken ham for a savoury, satisfying bite. Prepared fresh for an easy café lunch.",
+  "Chicken Club":"A hearty club sandwich with chicken layered between bread. A filling, savoury choice for lunch or a relaxed café meal.",
+  "Egg Mayo & Bacon Club":"A layered club sandwich combining egg mayonnaise and bacon. Rich, savoury and satisfying as a filling café meal.",
+  "Veg Burger":"A vegetarian burger with a savoury vegetable patty in a bun. Prepared fresh for a satisfying, easy-to-enjoy meal.",
+  "Paneer Burger":"A burger featuring paneer in a bun for a hearty vegetarian bite. A satisfying choice when you want a fuller meal.",
+  "Chicken Hot Dog":"A chicken sausage served in a soft hot dog roll. A familiar, savoury café favourite for a quick bite.",
+  "Chicken Burger":"A classic chicken burger served in a bun. Prepared fresh for a satisfying meal with familiar, savoury flavours.",
+  "Fried Chicken Burger":"A chicken burger with a crisp fried coating. A hearty, satisfying choice for guests who enjoy a little crunch.",
+  "Barbequed Chicken Burger":"A chicken burger with a barbecue-inspired savoury flavour. Prepared fresh in a bun for a filling café meal.",
+  "Peri Peri Chicken Burger":"A chicken burger seasoned with peri peri flavour for a lively, spicy bite. A hearty choice with a little extra kick.",
+  "Lamb Burger":"A savoury lamb patty served in a burger bun. A hearty café favourite, prepared fresh for a satisfying meal.",
+  "Pork Burger":"A savoury pork patty served in a burger bun. Prepared fresh for a rich, filling café-style meal.",
+  "Chicken Pepperoni Pizza":"A freshly baked pizza topped with chicken pepperoni. A savoury, satisfying choice for sharing around the table.",
+  "Double Cheese Burger":"Choose a veg, chicken or lamb patty, stacked with two patties and two cheese slices, then finished with pickle. A rich, filling burger made for a hearty meal.",
+  "Spaghetti in Marinara Sauce":"Spaghetti served with marinara, a tomato-based sauce with a bright, savoury flavour. Choose a veg, chicken or seafood version.",
+  "Penne in Alfredo Sauce":"Penne coated in a creamy Alfredo-style sauce for a comforting pasta meal. Choose a veg, chicken or seafood version.",
+  "Penne in Pesto Sauce":"Penne tossed in a fragrant pesto-style sauce for a savoury, herb-led flavour. Choose a veg, chicken or seafood version.",
+  "Spaghetti in Pink Sauce":"Spaghetti served with a creamy pink sauce that balances rich and tangy flavours. Choose a veg, chicken or seafood version.",
+  "Spaghetti in Lemon Butter Sauce":"Spaghetti finished with a lemon-butter sauce for a bright, mellow flavour. Choose a veg, chicken or seafood version.",
+  "Spaghetti & Meatballs":"Spaghetti paired with meatballs for a hearty, comforting pasta plate. Choose chicken or lamb.",
+  "Mac n Cheese":"Macaroni coated in a creamy cheese sauce for a warm, comforting meal. A familiar favourite for cheese lovers.",
+  "Lasagna":"Layers of pasta baked with your choice of vegetable, chicken or lamb filling. A hearty, comforting main served warm.",
+  "Caesar Salad":"A crisp Caesar-style salad with your choice of veg, chicken or seafood. A fresh, savoury option for a lighter meal.",
+  "Russian Salad":"A creamy Russian-style salad with your choice of veg, chicken or seafood. A cool, satisfying option for a lighter meal.",
+  "Greek Salad":"A fresh Greek-style salad with your choice of veg, chicken sausage or seafood. A colourful, savoury choice for a lighter meal.",
+  "Sauteed Veggies":"A warm plate of sautéed vegetables, with a choice of veg, chicken sausage or seafood. A simple, satisfying option.",
+  "Veg Wrap":"A soft wrap filled with a vegetarian filling for a light, easy-to-enjoy meal. Prepared fresh and served ready for the table.",
+  "Paneer Wrap":"A soft wrap filled with paneer for a hearty vegetarian bite. Prepared fresh as a satisfying lunch or snack.",
+  "Egg Wrap":"A soft wrap filled with egg for a simple, savoury meal. Prepared fresh for a quick and satisfying bite.",
+  "Chicken Wrap":"A soft wrap filled with chicken for a hearty, savoury meal. Prepared fresh and easy to enjoy at the table.",
+  "Cream of Tomato":"A smooth tomato soup with a mellow, savoury flavour. Served warm as a comforting starter or light meal.",
+  "Cream of Broccoli":"A creamy broccoli soup with a gentle, savoury taste. A warm and comforting choice for a light meal.",
+  "Cream of Mushroom":"A smooth mushroom soup with a rich, earthy flavour. Served warm for a comforting start or light meal.",
+  "Creamy Chicken":"A warm chicken soup with a creamy, savoury finish. A comforting bowl for a light meal or a cosy start.",
+  "Clear Veg":"A light, clear vegetable soup served warm. A simple and soothing way to begin a meal.",
+  "Clear Chicken":"A light chicken soup with a clear, savoury broth. Served warm for a soothing starter or lighter choice.",
+  "Plain Brownie":"A rich chocolate brownie with a soft, dense centre. A small, satisfying treat for a sweet finish.",
+  "Brownie Sundae":"A chocolate brownie served with ice cream for a warm-and-cold dessert combination. A satisfying treat to share or enjoy solo.",
+  "Strawberry Sundae":"A chilled ice-cream sundae with strawberry flavour. A cool, fruity dessert to finish your meal.",
+  "Chocolate Sundae":"A chilled ice-cream sundae with chocolate flavour. A creamy, sweet finish for chocolate lovers.",
+  "Tea":"A freshly brewed cup of tea served warm. A familiar, comforting drink to enjoy with a meal or on its own.",
+  "Ginger Tea":"Warm tea with a gently spicy ginger flavour. A soothing cup for a relaxed café break.",
+  "Coffee (Regular)":"A freshly prepared cup of regular coffee, served warm. A simple café classic for any time of day.",
+  "Coffee (Filter)":"A warm cup of filter coffee with a deep, familiar coffee flavour. A comforting choice for a slow café moment.",
+  "Cappuccino":"Espresso topped with steamed milk and a light layer of foam. A smooth, warming coffee classic.",
+  "Milk":"A simple glass of milk served as a light, straightforward drink. Enjoy it on its own or alongside a meal.",
+  "Espresso":"A short, concentrated coffee made with 100% Arabica beans. Bold in flavour and served in a small cup.",
+  "Americano":"Espresso lengthened with hot water for a smooth, bold cup. A simple coffee choice without milk.",
+  "Black Tea / Black Coffee / Lemon Tea / Green Tea":"Choose black tea, black coffee, lemon tea or green tea, freshly prepared and served warm. A simple drink to enjoy at any time.",
+  "Hot Chocolate":"A warm chocolate drink with a smooth, comforting taste. A sweet café classic for a cosy break.",
+  "Iced Tea (Lemon / Peach)":"Choose lemon or peach iced tea, served chilled for a refreshing break. A light, easy-to-enjoy drink.",
+  "Cold Coffee":"A chilled coffee drink with a smooth, refreshing finish. A cool café pick for coffee lovers.",
+  "Chocolate / Vanilla / Banana Milk Shake":"Choose chocolate, vanilla or banana in a cool, creamy milkshake. A sweet and filling drink served chilled.",
+  "Iced Americano":"Espresso and cold water served over ice for a crisp, refreshing coffee. A bold chilled choice without milk.",
+  "Lemon Juice":"Fresh lemon juice served chilled for a bright, citrusy refreshment. A simple drink to enjoy with a meal.",
+  "Lemon Soda":"A sparkling lemon drink with a crisp, citrusy finish. Served chilled for a refreshing café break.",
+  "Salted Caramel Latte / Iced Mocha Latte":"Choose a salted caramel latte or an iced mocha latte. A smooth coffee drink with a sweet finish, served warm or chilled.",
+  "Virgin Mojito":"A cool, minty lime-style mocktail served without alcohol. A refreshing choice for a relaxed café visit.",
+  "Black Mojito":"A dark, refreshing mocktail with a lively citrus-style finish. Served chilled as a bold alternative to a classic mojito.",
+  "Blue Sky":"A colourful, alcohol-free mocktail served chilled. A bright and refreshing drink to enjoy with your meal.",
+  "Cinderella":"A colourful, alcohol-free mocktail served chilled. A sweet, refreshing choice for a relaxed café break.",
+  "Purple Rain":"A vibrant, alcohol-free mocktail with a refreshing finish. Served chilled for a little colour with your meal.",
+  "Blue Hawaiian Punch":"A tropical-style, alcohol-free punch served chilled. A bright, fruity refreshment for a warm day.",
+  "Strawberry / Mango Punch":"Choose strawberry or mango punch, mixed fresh and served chilled. A fruity, refreshing drink for any time of day.",
+  "Litchi Lemonade":"A chilled lemonade with a sweet litchi twist. Bright, fruity and refreshing with a meal or on its own.",
+  "Strawberry Colada":"A chilled colada-style drink with strawberry flavour. Smooth, fruity and refreshing for a sweet café treat."
+ };
+ if(specific[name]) return specific[name];
+ const endings={
+  "Breakfast":"A hearty, comforting plate that makes an easy start to the day.",
+  "Eggs":"Cooked fresh to order, it is a simple and satisfying breakfast choice.",
+  "Omelettes":"Freshly cooked and served with buttered toast for a filling breakfast.",
+  "Appetizers":"A savoury café starter, made for enjoying at the table or sharing.",
+  "Sandwiches":"Made fresh for a satisfying, easy-to-enjoy café meal.",
+  "Burgers":"A hearty, freshly prepared choice for a relaxed café meal.",
+  "Pizzas":"Baked until hot and ready to share around the table.",
+  "Pastas":"A comforting, freshly prepared plate for an easy lunch or dinner.",
+  "Main course":"A generous, satisfying plate for a relaxed meal.",
+  "Salads & Wraps":"A fresh, easy-to-enjoy choice for a lighter meal.",
+  "Soups":"Served warm for a comforting start or a light meal.",
+  "Desserts":"A sweet, satisfying finish to your café visit.",
+  "Hot drinks":"Prepared fresh and served warm, one cup at a time.",
+  "Cold drinks":"Mixed fresh and served chilled for a refreshing break."
+ };
+ if(description){
+  const detail=description.trim().replace(/[. ]+$/,"");
+  if(/^on a bed of\s/i.test(detail)){
+   return `${name} is served on a bed of ${detail.replace(/^on a bed of\s/i,"").toLowerCase()}. ${endings[category]||"A fresh café favourite, prepared to order."}`;
+  }
+  if(/^with\s/i.test(detail)){
+   return `${name} is prepared fresh and served ${detail.replace(/^with\s/i,"with ").toLowerCase()}. ${endings[category]||"A freshly prepared café favourite."}`;
+  }
+  if(/^mocktail$/i.test(detail)){
+   return `${name} is a refreshing, alcohol-free mocktail, mixed fresh and served chilled. ${endings[category]||"A refreshing choice to enjoy with your meal."}`;
+  }
+  return `${name} brings together ${detail.charAt(0).toLowerCase()+detail.slice(1)}. ${endings[category]||"A satisfying café favourite, prepared fresh to order."}`;
+ }
+ const descriptions={
+  "Breakfast":`${name} is a freshly prepared breakfast favourite, served as a satisfying plate to enjoy at your own pace. ${endings[category]}`,
+  "Eggs":`${name} is cooked fresh to order for a familiar, comforting breakfast. ${endings[category]}`,
+  "Omelettes":`${name} is a freshly cooked omelette with a soft, satisfying centre. ${endings[category]}`,
+  "Appetizers":`${name} is a savoury starter prepared fresh for the table. ${endings[category]}`,
+  "Sandwiches":`${name} is a freshly assembled café sandwich, made for a simple and satisfying bite. ${endings[category]}`,
+  "Burgers":`${name} is a hearty café-style burger, prepared fresh and served hot. ${endings[category]}`,
+  "Pizzas":`${name} is a freshly baked pizza with a savoury, oven-finished base. ${endings[category]}`,
+  "Pastas":`${name} is a comforting pasta dish, prepared fresh and served warm. ${endings[category]}`,
+  "Main course":`${name} is a hearty café main, freshly prepared as a complete and satisfying meal. ${endings[category]}`,
+  "Salads & Wraps":`${name} is a fresh, easy-to-enjoy café choice prepared to order. ${endings[category]}`,
+  "Soups":`${name} is a warm, comforting soup prepared fresh for the table. ${endings[category]}`,
+  "Desserts":`${name} is a sweet café treat, prepared to make a lovely finish to your meal. ${endings[category]}`,
+  "Hot drinks":`${name} is a classic café drink, prepared fresh and served warm. ${endings[category]}`,
+  "Cold drinks":`${name} is a refreshing café drink, mixed fresh and served chilled. ${endings[category]}`
+ };
+ return descriptions[category]||`${name} is prepared fresh to order as a satisfying café favourite. ${endings[category]||"Enjoy it as part of your visit."}`;
+}
 function render(){
  let h="";
  M.forEach(([t,tag,items])=>{
@@ -44,10 +197,13 @@ function render(){
     if(labels.length!==prices.length)labels=prices.map((_,i)=>`Option ${i+1}`);
     variantOptions=`<select class="variant" aria-label="Choose option for ${n}">${prices.map((price,i)=>`<option value="${price}" data-label="${labels[i]||`Option ${i+1}`}">${labels[i]||`Option ${i+1}`} - Rs ${price}</option>`).join("")}</select>`;
    }
-   return `<div class="it"><div><div class="nm">${v?`<span class="d ${v}"></span>`:""}${n}</div>${d?`<div class="ds">${d}</div>`:""}</div><div class="add-row"><span class="pr">${p}</span>${variantOptions}<button class="add-btn" type="button" data-name="${n}" data-price="${prices[0]}">Add</button></div></div>`;
+   const description=itemDescription(n,d&& !d.includes("/")?d:"",t);
+   const displayPrice=prices.length>1?`Rs ${prices[0]}–${prices[prices.length-1]}`:`Rs ${prices[0]}`;
+   return `<div class="it" data-category="${t}" data-name="${n}"><div class="item-copy"><div class="nm">${v?`<span class="d ${v}"></span>`:""}<button class="it-name-button" type="button" aria-expanded="false">${n}</button></div></div><div class="add-row"><span class="pr">${displayPrice}</span>${variantOptions}<div class="menu-control"></div></div><div class="item-details" hidden><p>${description}</p></div></div>`;
   }).join("")+`</div></div>`;
  });
  $("#out").innerHTML=h||`<p class="none">No dishes match. Clear the search or choose All.</p>`;
+ updateMenuControls();
 }
 $("#chips").onclick=e=>{const c=e.target.dataset.c;if(!c)return;cat=c;chips();render()};
 $("#f").onclick=e=>{if(e.target.dataset.f===undefined)return;ft=e.target.dataset.f;document.querySelectorAll("#f button").forEach(b=>b.classList.toggle("on",b===e.target));render()};
@@ -65,20 +221,48 @@ function updateCart(){
  });
  $("#cartLines").innerHTML=html||`<p class="lead">Your cart is empty. Add a few favourites to start your shortlist.</p>`;
  $("#cartCount").textContent=count;
+ $("#cartCountFloat").textContent=count;
  $("#cartTotal").textContent=total;
+ updateMenuControls();
+}
+function updateMenuControls(){
+ document.querySelectorAll("#out .it").forEach(row=>{
+  const select=row.querySelector(".variant");
+  const selected=select&&select.selectedOptions[0];
+  const label=selected?selected.dataset.label||"": "";
+  const line=cart.get(cartKey(row.dataset.name,label));
+  const control=row.querySelector(".menu-control");
+  if(line){
+   control.innerHTML=`<div class="menu-qty"><button class="menu-action" type="button" data-change="-1" aria-label="Remove one ${row.dataset.name}">−</button><span aria-live="polite">${line.qty}</span><button class="menu-action" type="button" data-change="1" aria-label="Add one ${row.dataset.name}">+</button></div>`;
+  }else{
+   control.innerHTML=`<button class="add-btn menu-action" type="button" data-change="1" aria-label="Add ${row.dataset.name} to cart">Add</button>`;
+  }
+ });
 }
 $("#out").addEventListener("click",e=>{
- const add=e.target.closest(".add-btn");
- if(!add)return;
- const row=add.closest(".it");
+ const nameButton=e.target.closest(".it-name-button");
+ if(nameButton){
+  const details=nameButton.closest(".it").querySelector(".item-details");
+  const expanded=nameButton.getAttribute("aria-expanded")==="true";
+  details.hidden=expanded;
+  nameButton.setAttribute("aria-expanded",String(!expanded));
+  return;
+ }
+ const action=e.target.closest(".menu-action");
+ if(!action)return;
+ const row=action.closest(".it");
  const select=row.querySelector(".variant");
- let price=Number(add.dataset.price),label="";
+ let price=Number(row.querySelector(".pr").textContent.replace(/[^\d]/g,"")),label="";
  if(select){const selected=select.selectedOptions[0];price=Number(selected.value);label=selected.dataset.label||""}
- const key=cartKey(add.dataset.name,label);
+ const key=cartKey(row.dataset.name,label);
  const existing=cart.get(key);
- cart.set(key,{name:add.dataset.name,label,price,qty:existing?existing.qty+1:1});
+ const qty=(existing?existing.qty:0)+Number(action.dataset.change);
+ if(qty<=0)cart.delete(key);
+ else cart.set(key,{name:row.dataset.name,label,price,qty});
  updateCart();
- $("#cartDrawer").classList.add("open");
+});
+$("#out").addEventListener("change",e=>{
+ if(e.target.matches(".variant"))updateMenuControls();
 });
 $("#cartLines").onclick=e=>{
  const button=e.target.closest("[data-cart-key]");
@@ -90,26 +274,23 @@ $("#cartLines").onclick=e=>{
  if(line.qty<=0)cart.delete(key);else cart.set(key,line);
  updateCart();
 };
-$("#cartOpen").onclick=()=>$("#cartDrawer").classList.toggle("open");
+const toggleCart=()=>$("#cartDrawer").classList.toggle("open");
+$("#cartOpen").onclick=toggleCart;
+$("#cartFloat").onclick=toggleCart;
 $("#cartClose").onclick=()=>$("#cartDrawer").classList.remove("open");
+let lastScrollY=window.scrollY;
+window.addEventListener("scroll",()=>{
+ const currentScrollY=window.scrollY;
+ if(currentScrollY<70) document.body.classList.remove("nav-hidden");
+ else if(currentScrollY-lastScrollY>4) document.body.classList.add("nav-hidden");
+ else if(lastScrollY-currentScrollY>4) document.body.classList.remove("nav-hidden");
+ if(Math.abs(currentScrollY-lastScrollY)>4) lastScrollY=currentScrollY;
+},{passive:true});
 updateCart();
 chips();render();
 
-// Guest reviews and the table-aware QR landing experience
-const reviewConfig=window.BREWMOON_CONFIG||{};
-const reviewUrl=typeof reviewConfig.supabaseUrl==="string"?reviewConfig.supabaseUrl.replace(/\/+$/,""):"";
-const reviewKey=typeof reviewConfig.supabaseAnonKey==="string"?reviewConfig.supabaseAnonKey:"";
-const reviewList=$("#reviewList");
-const reviewStatus=$("#reviewStatus");
-const reviewSubmit=$("#reviewSubmit");
-let selectedRating=0;
-
+// Table-aware QR landing
 const tableNumber=new URLSearchParams(location.search).get("table");
-if(tableNumber&&/^[a-zA-Z0-9 -]{1,12}$/.test(tableNumber)){
- const welcome=$("#tableWelcome");
- welcome.textContent=`Welcome, table ${tableNumber.trim()} — make yourself at home.`;
- welcome.hidden=false;
-}
 
 $("#moodOptions").addEventListener("click",event=>{
  const button=event.target.closest("[data-category]");
@@ -121,139 +302,15 @@ $("#moodOptions").addEventListener("click",event=>{
  $("#menu").scrollIntoView({behavior:"smooth",block:"start"});
 });
 
-$("#starPicker").addEventListener("click",event=>{
- const button=event.target.closest("[data-rating]");
- if(!button)return;
- selectedRating=Number(button.dataset.rating);
- $("#reviewRating").value=String(selectedRating);
- $("#starPicker").querySelectorAll("button").forEach(star=>{
-  const active=Number(star.dataset.rating)<=selectedRating;
-  star.classList.toggle("selected",active);
-  star.setAttribute("aria-pressed",String(Number(star.dataset.rating)===selectedRating));
- });
+$("#placeOrder").addEventListener("click",()=>{
+ if(!cart.size){
+  $("#orderConfirmation").hidden=false;
+  $("#orderConfirmation").innerHTML="<strong>No items yet</strong><p>Add a dish before showing the order at the counter.</p>";
+  return;
+ }
+ const table=tableNumber&&/^[a-zA-Z0-9 -]{1,12}$/.test(tableNumber)?`Table ${tableNumber.trim()}`:"Order for counter";
+ const lines=[...cart.values()].map(line=>`<li>${line.qty} × ${line.name}${line.label?` (${line.label})`:""} — Rs ${line.price*line.qty}</li>`).join("");
+ $("#orderConfirmation").hidden=false;
+ $("#orderConfirmation").innerHTML=`<strong>${table}</strong><ul>${lines}</ul><p><b>Total: Rs ${$("#cartTotal").textContent}</b></p><p>Please show this screen to the billing counter to confirm and pay.</p>`;
+ $("#orderConfirmation").scrollIntoView({behavior:"smooth",block:"nearest"});
 });
-
-function showGuestReviews(reviews){
- reviewList.replaceChildren();
- $("#reviewCount").textContent=`${reviews.length} of 5`;
- if(!reviews.length){
-  const empty=document.createElement("p");
-  empty.className="review-empty";
-  empty.textContent="No guest reviews just yet. Be the first to share what you enjoyed.";
-  reviewList.appendChild(empty);
-  return;
- }
- reviews.forEach(review=>{
-  const card=document.createElement("article");
-  card.className="review-card";
-  const head=document.createElement("div");
-  head.className="review-card-head";
-  const name=document.createElement("span");
-  name.className="review-card-name";
-  name.textContent=review.customer_name;
-  const date=document.createElement("time");
-  date.className="review-card-date";
-  const parsedDate=new Date(review.created_at);
-  if(!Number.isNaN(parsedDate.getTime())){
-   date.dateTime=parsedDate.toISOString();
-   date.textContent=new Intl.DateTimeFormat("en-IN",{day:"numeric",month:"short",year:"numeric"}).format(parsedDate);
-  }
-  head.append(name,date);
-  const stars=document.createElement("div");
-  stars.className="review-card-stars";
-  stars.setAttribute("aria-label",`${review.rating} out of 5 stars`);
-  stars.textContent="★".repeat(review.rating)+"☆".repeat(5-review.rating);
-  const dish=document.createElement("h4");
-  dish.className="review-card-dish";
-  dish.textContent=review.dish_name;
-  card.append(head,stars,dish);
-  if(review.comment){
-   const comment=document.createElement("p");
-   comment.className="review-card-comment";
-   comment.textContent=review.comment;
-   card.appendChild(comment);
-  }
-  reviewList.appendChild(card);
- });
-}
-
-async function loadGuestReviews(){
- if(!reviewUrl||!reviewKey){
-  reviewList.replaceChildren();
-  const message=document.createElement("p");
-  message.className="review-empty";
-  message.textContent="Guest reviews will appear here once the cafe review service is connected.";
-  reviewList.appendChild(message);
-  $("#reviewCount").textContent="Top 5";
-  return;
- }
- try{
-  const response=await fetch(`${reviewUrl}/rest/v1/customer_reviews?select=id,created_at,customer_name,dish_name,rating,comment&status=eq.approved&order=created_at.desc&limit=5`,{
-   headers:{apikey:reviewKey,Authorization:`Bearer ${reviewKey}`}
-  });
-  if(!response.ok)throw new Error(`Review service returned ${response.status}.`);
-  const reviews=await response.json();
-  if(!Array.isArray(reviews))throw new Error("Review service returned an unexpected response.");
-  showGuestReviews(reviews);
- }catch(error){
-  console.error("Unable to load guest reviews.",error);
-  reviewList.replaceChildren();
-  const message=document.createElement("p");
-  message.className="review-empty";
-  message.textContent="Guest reviews couldn't be loaded right now. Please try again later.";
-  reviewList.appendChild(message);
- }
-}
-
-$("#reviewForm").addEventListener("submit",async event=>{
- event.preventDefault();
- reviewStatus.classList.remove("error");
- if(!selectedRating){
-  reviewStatus.textContent="Please choose a star rating before submitting.";
-  reviewStatus.classList.add("error");
-  return;
- }
- if(!reviewUrl||!reviewKey){
-  reviewStatus.textContent="The review service isn't connected yet. Please try again later.";
-  reviewStatus.classList.add("error");
-  return;
- }
- reviewSubmit.disabled=true;
- reviewSubmit.textContent="Sending…";
- reviewStatus.textContent="";
- try{
-  const response=await fetch(`${reviewUrl}/rest/v1/customer_reviews`,{
-   method:"POST",
-   headers:{
-    apikey:reviewKey,
-    Authorization:`Bearer ${reviewKey}`,
-    "Content-Type":"application/json",
-    Prefer:"return=minimal"
-   },
-   body:JSON.stringify({
-    customer_name:$("#reviewName").value.trim()||"Cafe guest",
-    dish_name:$("#reviewDish").value.trim(),
-    rating:selectedRating,
-    comment:$("#reviewComment").value.trim(),
-    status:"pending"
-   })
-  });
-  if(!response.ok)throw new Error(`Review service returned ${response.status}.`);
-  $("#reviewForm").reset();
-  selectedRating=0;
-  $("#starPicker").querySelectorAll("button").forEach(star=>{
-   star.classList.remove("selected");
-   star.setAttribute("aria-pressed","false");
-  });
-  reviewStatus.textContent="Thank you! Your review has been sent for a quick check before it appears here.";
- }catch(error){
-  console.error("Unable to submit guest review.",error);
-  reviewStatus.textContent="Your review couldn't be sent. Please check your connection and try again.";
-  reviewStatus.classList.add("error");
- }finally{
-  reviewSubmit.disabled=false;
-  reviewSubmit.textContent="Share your review";
- }
-});
-
-loadGuestReviews();
