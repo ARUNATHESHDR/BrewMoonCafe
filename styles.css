@@ -68,6 +68,18 @@ h2{font-size:clamp(38px,6vw,84px);margin-bottom:20px}
 .sig div{flex:0 0 min(290px,76vw);aspect-ratio:1;scroll-snap-align:center;border-radius:50%;padding:12%;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--g2);border:2px solid var(--cream);outline:2px dashed var(--gold);outline-offset:-14px;transition:.6s cubic-bezier(.2,.8,.2,1)}
 .sig div:hover{transform:rotate(8deg) scale(1.05)}
 .sig h3{font-size:25px;margin-bottom:8px}.sig p{font-size:13.5px;color:#E9F0E8;line-height:1.4}.sig b{margin-top:10px;font:600 22px Fraunces,serif;color:#D2E0D3}
+/* Google review highlights */
+#reviews{background:var(--paper);color:var(--g0)}
+.reviews-top{display:flex;justify-content:space-between;align-items:end;gap:24px}
+.review-kicker{font:600 22px Caveat,cursive;color:var(--leaf);margin-bottom:10px}
+.reviews-top h2{margin-bottom:0}
+.review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px}
+.review-card{display:flex;flex-direction:column;align-items:flex-start;min-height:270px;padding:30px;background:var(--cream);border:1px solid var(--line);border-radius:8px;box-shadow:6px 8px 0 rgba(16,40,31,.1)}
+.review-card small{font:600 21px Caveat,cursive;color:var(--leaf)}
+.review-card h3{font-size:30px;margin:12px 0}
+.review-card p{color:#3c5a4c}
+.review-source{margin-top:auto;padding-top:24px;color:var(--g0);font-weight:600;text-decoration-thickness:1px;text-underline-offset:3px}
+.review-note{margin-top:28px;color:#3c5a4c;font-size:14px}
 /* menu */
 #menu{background:var(--g1);border-top:10px double var(--line)}
 .bar{position:sticky;top:124px;z-index:10;background:var(--g1);padding:14px 0;margin:20px 0 10px}
@@ -136,6 +148,8 @@ footer h2{margin-inline:auto}footer p{color:#D2E0D3}
  .stage{order:-1;height:clamp(220px,62vw,340px);min-height:220px}
  .day,.items{grid-template-columns:1fr}
  .day{gap:24px;margin-top:42px}
+ .reviews-top{align-items:flex-start;flex-direction:column}
+ .review-grid{grid-template-columns:1fr}
  section{padding:80px 5vw}
  .bar{top:120px}
  .vine{display:none}
